@@ -97,7 +97,7 @@ class Role extends Resource
                     return $request->user()->isSuperAdmin();
                 })
             ,
-            Checkboxes::make(__('Permissions'), 'prepared_permissions')->withGroups()->options(SpatiePermission::all()->map(function ($permission, $key) {
+            Checkboxes::make(__('Permissions'), 'prepared_permissions')->withGroups()->options($this->loadPermissions()->map(function ($permission, $key) {
                 return [
                     'group'  => __(ucfirst($permission->group)),
                     'option' => $permission->name,
@@ -110,6 +110,16 @@ class Role extends Resource
             })->exceptOnForms(),
             MorphToMany::make($userResource::label(), 'users', $userResource)->searchable(),
         ];
+    }
+
+    /**
+     * Load all permissions
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|SpatiePermission[]
+     */
+    protected function loadPermissions()
+    {
+        return SpatiePermission::all();
     }
 
     /**
