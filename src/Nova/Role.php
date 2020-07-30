@@ -76,7 +76,6 @@ class Role extends Resource
             return [$key => $key];
         });
 
-        $permissionClass = config('permission.models.permission');
         $userResource = Nova::resourceForModel(getModelForGuard($this->guard_name));
 
         return [
@@ -99,7 +98,7 @@ class Role extends Resource
             ,
             Checkboxes::make(__('Permissions'), 'prepared_permissions')
                 ->withGroups()
-                ->options($permissionClass::all()->map(function ($permission, $key) {
+                ->options($this->loadPermissions()->map(function ($permission, $key) {
                     return [
                         'group'  => __(ucfirst($permission->group)),
                         'option' => $permission->name,
@@ -114,6 +113,18 @@ class Role extends Resource
             })->exceptOnForms(),
             MorphToMany::make($userResource::label(), 'users', $userResource)->searchable(),
         ];
+    }
+
+    /**
+     * Load all permissions
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|SpatiePermission[]
+     */
+    protected function loadPermissions()
+    {
+        $permissionClass = config('permission.models.permission');
+
+        return $permissionClass::all();
     }
 
     /**
