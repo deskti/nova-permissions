@@ -118,7 +118,7 @@ class Role extends Resource
     /**
      * Load all permissions
      *
-     * @return \Illuminate\Database\Eloquent\Collection|SpatiePermission[]
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     protected function loadPermissions()
     {
