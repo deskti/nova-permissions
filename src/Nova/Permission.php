@@ -78,8 +78,6 @@ class Permission extends Resource
             return [$key => $key];
         });
 
-        $userResource = Nova::resourceForModel(getModelForGuard($this->guard_name));
-
         return [
             ID::make('Id', 'id')
                 ->rules('required')
@@ -100,7 +98,7 @@ class Permission extends Resource
             // DateTime::make(__('nova-permission-tool::permissions.updated_at'), 'updated_at')->exceptOnForms(),
 
             BelongsToMany::make(__('Roles'), 'roles', Role::class),
-            MorphToMany::make($userResource::label(), 'users', $userResource)->searchable(),
+            MorphToMany::make('Users', 'users', 'App\Nova\User')->searchable(),
         ];
     }
 
