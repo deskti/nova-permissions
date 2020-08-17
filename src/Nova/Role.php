@@ -76,8 +76,6 @@ class Role extends Resource
             return [$key => $key];
         });
 
-        $userResource = Nova::resourceForModel(getModelForGuard($this->guard_name));
-
         return [
             ID::make('Id', 'id')
                 ->rules('required')
@@ -105,13 +103,14 @@ class Role extends Resource
                         'label'  => __($permission->name),
                     ];
                 })
-                ->groupBy('group')
-                ->toArray()),
+                    ->groupBy('group')
+                    ->toArray()),
 
             Text::make(__('Users'), function () {
                 return $this->users()->count();
             })->exceptOnForms(),
-            MorphToMany::make($userResource::label(), 'users', $userResource)->searchable(),
+
+            MorphToMany::make('Users', 'users', 'App\Nova\User')->searchable(),
         ];
     }
 
