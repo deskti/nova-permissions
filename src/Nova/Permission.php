@@ -15,10 +15,6 @@ use Spatie\Permission\Models\Permission as SpatiePermission;
 
 class Permission extends Resource
 {
-    /**
-     * @var mixed
-     */
-    public static $displayInNavigation = false;
 
     /**
      * The model the resource corresponds to.
@@ -74,10 +70,6 @@ class Permission extends Resource
      */
     public function fields(Request $request)
     {
-        $guardOptions = collect(config('auth.guards'))->mapWithKeys(function ($value, $key) {
-            return [$key => $key];
-        });
-
         return [
             ID::make('Id', 'id')
                 ->rules('required')
@@ -91,8 +83,12 @@ class Permission extends Resource
             Text::make(__('Group'), 'group'),
 
             Select::make(__('Guard Name'), 'guard_name')
-                ->options($guardOptions->toArray())
-                ->rules(['required', Rule::in($guardOptions)]),
+                ->options([
+                    'web' => 'Auth sessions',
+                    'sanctum' => 'Auth tokens,
+                ])
+                ->displayUsingLabels()
+                ->rules(['required'),
 
             // DateTime::make(__('nova-permission-tool::permissions.created_at'), 'created_at')->exceptOnForms(),
             // DateTime::make(__('nova-permission-tool::permissions.updated_at'), 'updated_at')->exceptOnForms(),
