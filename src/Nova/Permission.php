@@ -88,7 +88,7 @@ class Permission extends Resource
                     'sanctum' => 'Auth tokens,
                 ])
                 ->displayUsingLabels()
-                ->rules(['required'),
+                ->rules(['required']),
 
             // DateTime::make(__('nova-permission-tool::permissions.created_at'), 'created_at')->exceptOnForms(),
             // DateTime::make(__('nova-permission-tool::permissions.updated_at'), 'updated_at')->exceptOnForms(),
