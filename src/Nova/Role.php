@@ -85,7 +85,7 @@ class Role extends Resource
                     'sanctum' => 'Auth api tokens'
                 ])
                 ->displayUsingLabels()
-                ->rules(['required')
+                ->rules(['required'])
                 ->canSee(function ($request) {
                     return $request->user()->isSuperAdmin();
                 })
