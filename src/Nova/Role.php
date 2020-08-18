@@ -15,6 +15,8 @@ use Eminiarts\NovaPermissions\Role as RoleModel;
 class Role extends Resource
 {
 
+    $group = "Security";
+    
     /**
      * The model the resource corresponds to.
      *
@@ -68,6 +70,8 @@ class Role extends Resource
      */
     public function fields(Request $request)
     {
+        $userNova = config('app.tenancy_uuid') === 'system' ? 'App\Nova\UserSystem' : 'App\Nova\User';
+        
         return [
             ID::make('Id', 'id')
                 ->rules('required')
@@ -106,7 +110,7 @@ class Role extends Resource
                 return $this->users()->count();
             })->exceptOnForms(),
 
-            MorphToMany::make('Users', 'users', 'App\Nova\User')->searchable(),
+            MorphToMany::make('Users', 'users', $userNova)->searchable(),
         ];
     }
 
