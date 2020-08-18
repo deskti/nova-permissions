@@ -15,6 +15,8 @@ use Spatie\Permission\Models\Permission as SpatiePermission;
 
 class Permission extends Resource
 {
+    
+    $group = "Security";
 
     /**
      * The model the resource corresponds to.
@@ -70,6 +72,8 @@ class Permission extends Resource
      */
     public function fields(Request $request)
     {
+        $userNova = config('app.tenancy_uuid') === 'system' ? 'App\Nova\UserSystem' : 'App\Nova\User';
+        
         return [
             ID::make('Id', 'id')
                 ->rules('required')
@@ -94,7 +98,7 @@ class Permission extends Resource
             // DateTime::make(__('nova-permission-tool::permissions.updated_at'), 'updated_at')->exceptOnForms(),
 
             BelongsToMany::make(__('Roles'), 'roles', Role::class),
-            MorphToMany::make('Users', 'users', 'App\Nova\User')->searchable(),
+            MorphToMany::make('Users', 'users', $userNova)->searchable(),
         ];
     }
 
