@@ -15,7 +15,7 @@ use Eminiarts\NovaPermissions\Role as RoleModel;
 class Role extends Resource
 {
 
-    $group = "Security";
+    public static $group = "Security";
     
     /**
      * The model the resource corresponds to.
