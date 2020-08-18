@@ -14,10 +14,6 @@ use Eminiarts\NovaPermissions\Role as RoleModel;
 
 class Role extends Resource
 {
-    /**
-     * @var mixed
-     */
-    public static $displayInNavigation = false;
 
     /**
      * The model the resource corresponds to.
@@ -72,10 +68,6 @@ class Role extends Resource
      */
     public function fields(Request $request)
     {
-        $guardOptions = collect(config('auth.guards'))->mapWithKeys(function ($value, $key) {
-            return [$key => $key];
-        });
-
         return [
             ID::make('Id', 'id')
                 ->rules('required')
@@ -88,8 +80,12 @@ class Role extends Resource
 
             ,
             Select::make(__('Guard Name'), 'guard_name')
-                ->options($guardOptions->toArray())
-                ->rules(['required', Rule::in($guardOptions)])
+                ->options([
+                    'web' => 'Auth session',
+                    'sanctum' => 'Auth api tokens'
+                ])
+                ->displayUsingLabels()
+                ->rules(['required')
                 ->canSee(function ($request) {
                     return $request->user()->isSuperAdmin();
                 })
@@ -100,7 +96,7 @@ class Role extends Resource
                     return [
                         'group'  => __(ucfirst($permission->group)),
                         'option' => $permission->name,
-                        'label'  => __($permission->name),
+                        'label'  => '&nbsp;'.__($permission->name),
                     ];
                 })
                     ->groupBy('group')
