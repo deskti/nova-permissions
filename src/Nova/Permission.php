@@ -16,7 +16,7 @@ use Spatie\Permission\Models\Permission as SpatiePermission;
 class Permission extends Resource
 {
     
-    $group = "Security";
+    public static $group = "Security";
 
     /**
      * The model the resource corresponds to.
