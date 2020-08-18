@@ -85,7 +85,7 @@ class Permission extends Resource
             Select::make(__('Guard Name'), 'guard_name')
                 ->options([
                     'web' => 'Auth sessions',
-                    'sanctum' => 'Auth tokens,
+                    'sanctum' => 'Auth tokens',
                 ])
                 ->displayUsingLabels()
                 ->rules(['required']),
